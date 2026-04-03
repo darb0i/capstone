@@ -38,6 +38,7 @@ export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetai
         block: deceased.block,
         row: deceased.row,
         graveNumber: deceased.graveNumber,
+        deathDate: deceased.deathDate,
       })
     }
   }
@@ -75,7 +76,7 @@ export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetai
                   ? "bg-white text-[#1a472a]" 
                   : "bg-white/20 text-white hover:bg-white/30"
               }`}
-              title={bookmarked ? t("Remove bookmark", "Alisin ang bookmark") : t("Bookmark to get notified of grave changes", "I-bookmark para maabisuhan sa mga pagbabago ng libingan")}
+              title={bookmarked ? t("Remove bookmark", "Alisin ang bookmark") : t("Bookmark to get notified of grave changes and death anniversaries", "I-bookmark para maabisuhan sa mga pagbabago ng libingan at kamatayan kaarawan")}
             >
               {bookmarked ? (
                 <BookmarkCheck className="w-5 h-5" />
@@ -88,7 +89,7 @@ export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetai
             <div className="mt-3 pt-3 border-t border-white/20">
               <p className="text-xs text-white/70 flex items-center gap-1.5">
                 <BookmarkCheck className="w-3.5 h-3.5" />
-                {t("You will be notified if this grave is moved", "Maabisuhan ka kung ililipat ang libingang ito")}
+                {t("You will be notified of grave changes and death anniversaries", "Maabisuhan ka ng mga pagbabago ng libingan at kamatayan kaarawan")}
               </p>
             </div>
           )}

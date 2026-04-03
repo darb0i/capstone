@@ -10,6 +10,7 @@ export interface BookmarkedDeceased {
   row: string
   graveNumber: string
   bookmarkedAt: string
+  deathDate?: string
 }
 
 export interface GraveMovedNotification {
@@ -43,7 +44,18 @@ export interface ReservationApprovedNotification {
   read: boolean
 }
 
-export type AppNotification = GraveMovedNotification | ReservationApprovedNotification
+export interface AnniversaryNotification {
+  id: string
+  type: "anniversary_upcoming"
+  deceasedName: string
+  deathDate: string
+  daysUntilAnniversary: number
+  bookmarkId: string
+  createdAt: string
+  read: boolean
+}
+
+export type AppNotification = GraveMovedNotification | ReservationApprovedNotification | AnniversaryNotification
 
 interface BookmarkContextType {
   bookmarks: BookmarkedDeceased[]
@@ -102,6 +114,35 @@ const exampleNotifications: AppNotification[] = [
   },
 ]
 
+// Utility function to calculate days until next death anniversary
+function calculateDaysUntilAnniversary(deathDateString: string): number {
+  const deathDate = new Date(deathDateString)
+  const today = new Date()
+  
+  // Get the month and day from death date
+  const monthDay = `${String(deathDate.getMonth() + 1).padStart(2, '0')}-${String(deathDate.getDate()).padStart(2, '0')}`
+  
+  // Create anniversary date for this year
+  let anniversaryDate = new Date(today.getFullYear(), deathDate.getMonth(), deathDate.getDate())
+  
+  // If anniversary already passed this year, check next year
+  if (anniversaryDate < today) {
+    anniversaryDate = new Date(today.getFullYear() + 1, deathDate.getMonth(), deathDate.getDate())
+  }
+  
+  // Calculate days until anniversary
+  const diffTime = anniversaryDate.getTime() - today.getTime()
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  
+  return diffDays
+}
+
+// Check if anniversary notification should be created (within 30 days)
+function shouldCreateAnniversaryNotification(deathDate: string): boolean {
+  const daysUntil = calculateDaysUntilAnniversary(deathDate)
+  return daysUntil >= 0 && daysUntil <= 30
+}
+
 export function BookmarkProvider({ children }: { children: ReactNode }) {
   const [bookmarks, setBookmarks] = useState<BookmarkedDeceased[]>([])
   const [notifications, setNotifications] = useState<AppNotification[]>([])
@@ -123,7 +164,8 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
     
     if (storedNotifications) {
       try {
-        setNotifications(JSON.parse(storedNotifications))
+        const parsed = JSON.parse(storedNotifications)
+        setNotifications(parsed)
       } catch {
         // Use default if parse fails
       }
@@ -156,6 +198,22 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
       bookmarkedAt: new Date().toISOString(),
     }
     saveBookmarks([...bookmarks, newBookmark])
+    
+    // Check if anniversary notification should be created
+    if (deceased.deathDate && shouldCreateAnniversaryNotification(deceased.deathDate)) {
+      const daysUntil = calculateDaysUntilAnniversary(deceased.deathDate)
+      const anniversaryNotification: AnniversaryNotification = {
+        id: `anniversary-${Date.now()}`,
+        type: "anniversary_upcoming",
+        deceasedName: deceased.name,
+        deathDate: deceased.deathDate,
+        daysUntilAnniversary: daysUntil,
+        bookmarkId: newBookmark.id,
+        createdAt: new Date().toISOString(),
+        read: false,
+      }
+      saveNotifications([...notifications, anniversaryNotification])
+    }
   }
 
   const removeBookmark = (name: string) => {
