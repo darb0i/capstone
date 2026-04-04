@@ -144,7 +144,13 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
     if (storedNotifications) {
       try {
         const parsed = JSON.parse(storedNotifications)
-        setNotifications(parsed)
+        // Filter out any old reservation_approved notifications
+        const filtered = parsed.filter((n: AppNotification) => n.type !== "reservation_approved")
+        setNotifications(filtered)
+        // Save the filtered notifications back to localStorage
+        if (filtered.length !== parsed.length) {
+          localStorage.setItem("memorial-nav-grave-notifications", JSON.stringify(filtered))
+        }
       } catch {
         // Use default if parse fails
       }
