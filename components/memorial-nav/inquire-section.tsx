@@ -134,7 +134,7 @@ export function InquireSection() {
   }
 
   const currentLotType = lotTypes.find(t => t.id === selectedType)
-  const availableLots = selectedType ? lotsData[selectedType] : []
+  const availableLots = selectedType ? lotsData[selectedType].filter(lot => lot.status === "available") : []
 
   // Select Lot Type View
   if (viewState === "select-type") {
@@ -182,7 +182,6 @@ export function InquireSection() {
   // Browse Lots View
   if (viewState === "browse-lots" && selectedType && currentLotType) {
     const title = language === "en" ? currentLotType.titleEn : currentLotType.titleTl
-    const availableCount = availableLots.filter(l => l.status === "available").length
 
     return (
       <div className="flex-1 flex flex-col bg-background min-h-0">
@@ -199,7 +198,7 @@ export function InquireSection() {
             {title} {t("Lots", "Lote")}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {availableCount} {t("available lots", "mga available na lote")} • {formatPrice(currentLotType.price)} {t("each", "bawat isa")}
+            {availableLots.length} {t("available lots", "mga available na lote")} • {formatPrice(currentLotType.price)} {t("each", "bawat isa")}
           </p>
         </div>
 
@@ -209,23 +208,16 @@ export function InquireSection() {
             {availableLots.map((lot) => (
               <button
                 key={lot.id}
-                onClick={() => lot.status === "available" && handleSelectLot(lot)}
-                disabled={lot.status === "reserved"}
-                className={`w-full p-4 rounded-xl border text-left transition-all ${lot.status === "available"
-                    ? "bg-card border-border hover:border-[#1a472a]/50 hover:shadow-md"
-                    : "bg-muted border-border opacity-60 cursor-not-allowed"
-                  }`}
+                onClick={() => handleSelectLot(lot)}
+                className="w-full p-4 rounded-xl border text-left transition-all bg-card border-border hover:border-[#1a472a]/50 hover:shadow-md"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
                     <span className="font-semibold text-foreground">{lot.name}</span>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${lot.status === "available"
-                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
-                    }`}>
-                    {lot.status === "available" ? t("Available", "Available") : t("Reserved", "Nakareserba")}
+                  <span className="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                    {t("Available", "Available")}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
