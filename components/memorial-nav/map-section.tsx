@@ -1,10 +1,23 @@
 "use client"
 
 import { useState, useRef, useCallback } from "react"
-import { Compass, MapPin, Navigation, ZoomIn, ZoomOut } from "lucide-react"
+import { Compass, MapPin, Navigation, ZoomIn, ZoomOut, X, Check } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
-export function MapSection() {
+interface NavigationTarget {
+  name: string
+  section: string
+  block: string
+  row: string
+  graveNumber: string
+}
+
+interface MapSectionProps {
+  navigationTarget?: NavigationTarget | null
+  onCancelNavigation?: () => void
+}
+
+export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionProps) {
   const [zoom, setZoom] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
@@ -109,6 +122,55 @@ export function MapSection() {
             className="w-full h-full object-cover pointer-events-none"
             draggable={false}
           />
+          
+          {/* Navigation Route Overlay */}
+          {navigationTarget && (
+            <>
+              {/* Navigation Route Line */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox="0 0 400 400"
+                preserveAspectRatio="xMidYMid slice"
+              >
+                <path
+                  d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                  fill="none"
+                  stroke="#60a5fa"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity="0.9"
+                />
+              </svg>
+
+              {/* User Location Marker */}
+              <div 
+                className="absolute pointer-events-none"
+                style={{ left: '15%', bottom: '18%', transform: 'translate(-50%, 50%)' }}
+              >
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full border-[3px] border-[#3b82f6] bg-[#3b82f6]/20 flex items-center justify-center">
+                    <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[14px] border-b-[#3b82f6] rotate-[-35deg]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Destination Marker */}
+              <div 
+                className="absolute pointer-events-none"
+                style={{ left: '62%', top: '28%', transform: 'translate(-50%, -100%)' }}
+              >
+                <div className="relative flex flex-col items-center">
+                  {/* Pin */}
+                  <div className="w-10 h-10 bg-[#a3e635] rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <div className="w-3 h-3 bg-white rounded-full" />
+                  </div>
+                  {/* Pin point */}
+                  <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-[#a3e635] -mt-1" />
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Zoom Controls */}
@@ -134,6 +196,28 @@ export function MapSection() {
             {t("Reset", "Reset")}
           </button>
         </div>
+
+        {/* Navigation Indicator */}
+        {navigationTarget && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
+            <div className="flex items-center gap-3 bg-[#1a472a] text-white px-5 py-3 rounded-full shadow-xl min-w-[280px]">
+              <div className="w-6 h-6 flex items-center justify-center bg-white/20 rounded-full flex-shrink-0">
+                <Check className="w-4 h-4 text-[#4ade80]" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs text-white/70">{t("Navigating to", "Papunta sa")}</p>
+                <p className="font-semibold text-white whitespace-nowrap">{navigationTarget.name}</p>
+              </div>
+              <button
+                onClick={onCancelNavigation}
+                className="w-8 h-8 flex items-center justify-center bg-red-500 rounded-full flex-shrink-0 hover:bg-red-600 transition-colors"
+                aria-label={t("Cancel navigation", "Kanselahin ang navigasyon")}
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

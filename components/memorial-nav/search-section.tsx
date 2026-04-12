@@ -53,17 +53,31 @@ const recentSearches: DeceasedInfo[] = [
   },
 ]
 
-interface SearchSectionProps {
-  onNavigateToMap?: () => void
+interface NavigationTarget {
+  name: string
+  section: string
+  block: string
+  row: string
+  graveNumber: string
 }
 
-export function SearchSection({ onNavigateToMap }: SearchSectionProps) {
+interface SearchSectionProps {
+  onNavigateToGrave?: (target: NavigationTarget) => void
+}
+
+export function SearchSection({ onNavigateToGrave }: SearchSectionProps) {
   const [selectedDeceased, setSelectedDeceased] = useState<DeceasedInfo | null>(null)
   const { t } = useLanguage()
 
   const handleDirections = () => {
-    if (onNavigateToMap) {
-      onNavigateToMap()
+    if (onNavigateToGrave && selectedDeceased) {
+      onNavigateToGrave({
+        name: selectedDeceased.name,
+        section: selectedDeceased.section,
+        block: selectedDeceased.block,
+        row: selectedDeceased.row,
+        graveNumber: selectedDeceased.graveNumber,
+      })
     }
     setSelectedDeceased(null)
   }
