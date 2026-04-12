@@ -199,10 +199,10 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
 
         {/* Navigation Indicator */}
         {navigationTarget && (
-          <div className="absolute bottom-4 left-4 right-20 z-20">
-            <div className="flex items-center gap-2 bg-[#1a472a] text-white px-4 py-2.5 rounded-full shadow-xl">
-              <div className="w-6 h-6 flex items-center justify-center bg-[#4ade80] rounded-full flex-shrink-0">
-                <Navigation className="w-3.5 h-3.5 text-[#1a472a] fill-[#1a472a]" />
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 mr-16">
+            <div className="flex items-center gap-3 bg-[#1a472a] text-white px-5 py-3 rounded-full shadow-xl">
+              <div className="w-7 h-7 flex items-center justify-center bg-[#4ade80] rounded-full flex-shrink-0">
+                <Navigation className="w-4 h-4 text-[#1a472a] fill-[#1a472a]" />
               </div>
               <div>
                 <p className="text-xs text-white/70">{t("Navigating to", "Papunta sa")}</p>
@@ -210,10 +210,10 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               </div>
               <button
                 onClick={onCancelNavigation}
-                className="w-7 h-7 flex items-center justify-center bg-red-500 rounded-full flex-shrink-0 hover:bg-red-600 transition-colors ml-1"
+                className="w-8 h-8 flex items-center justify-center bg-red-500 rounded-full flex-shrink-0 hover:bg-red-600 transition-colors"
                 aria-label={t("Cancel navigation", "Kanselahin ang navigasyon")}
               >
-                <X className="w-3.5 h-3.5 text-white" />
+                <X className="w-4 h-4 text-white" />
               </button>
             </div>
           </div>
