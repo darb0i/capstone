@@ -4,7 +4,18 @@ import { useState, useRef, useCallback } from "react"
 import { Compass, MapPin, Navigation, ZoomIn, ZoomOut } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
-export function MapSection() {
+interface MapSectionProps {
+  selectedDeceased?: {
+    name: string
+    section: string
+    block: string
+    row: string
+    graveNumber: string
+  } | null
+  onClearDirections?: () => void
+}
+
+export function MapSection({ selectedDeceased, onClearDirections }: MapSectionProps) {
   const [zoom, setZoom] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
@@ -12,6 +23,7 @@ export function MapSection() {
   const positionStart = useRef({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
   const { t } = useLanguage()
+  const showingDirections = !!selectedDeceased
 
   const handleZoomIn = () => {
     setZoom(prev => Math.min(prev + 0.2, 3))
@@ -55,32 +67,52 @@ export function MapSection() {
       {/* Cemetery Info Header */}
       <div className="px-4 py-3 flex items-center justify-between border-b border-border">
         <div>
-          <h2 className="font-semibold text-foreground">{t("Cemetery Map", "Mapa ng Sementeryo")}</h2>
-          <p className="text-sm text-[#1a472a] dark:text-[#4ade80]">Anahao Public Cemetery</p>
+          <h2 className="font-semibold text-foreground">
+            {showingDirections ? selectedDeceased.name : t("Cemetery Map", "Mapa ng Sementeryo")}
+          </h2>
+          <p className="text-sm text-[#1a472a] dark:text-[#4ade80]">
+            {showingDirections 
+              ? `${t("Section", "Seksyon")} ${selectedDeceased.section} • ${t("Block", "Block")} ${selectedDeceased.block}`
+              : "Anahao Public Cemetery"
+            }
+          </p>
         </div>
-        <button className="w-10 h-10 flex items-center justify-center border-2 border-[#1a472a] dark:border-[#4ade80] rounded-lg text-[#1a472a] dark:text-[#4ade80] hover:bg-[#1a472a]/5 transition-colors">
-          <Compass className="w-5 h-5" />
-          <span className="sr-only">{t("Compass", "Compass")}</span>
-        </button>
+        {showingDirections && (
+          <button 
+            onClick={onClearDirections}
+            className="w-10 h-10 flex items-center justify-center border-2 border-[#1a472a] dark:border-[#4ade80] rounded-lg text-[#1a472a] dark:text-[#4ade80] hover:bg-[#1a472a]/5 transition-colors"
+          >
+            <span className="sr-only">{t("Close", "Isara")}</span>
+            ✕
+          </button>
+        )}
+        {!showingDirections && (
+          <button className="w-10 h-10 flex items-center justify-center border-2 border-[#1a472a] dark:border-[#4ade80] rounded-lg text-[#1a472a] dark:text-[#4ade80] hover:bg-[#1a472a]/5 transition-colors">
+            <Compass className="w-5 h-5" />
+            <span className="sr-only">{t("Compass", "Compass")}</span>
+          </button>
+        )}
       </div>
 
       {/* Search Bar */}
-      <div className="px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="flex-1 flex items-center gap-2 px-3 py-2.5 bg-[#e8f0e8] dark:bg-[#1a472a]/30 rounded-lg">
-            <MapPin className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
-            <input
-              type="text"
-              placeholder={t("Search section or grave...", "Maghanap ng seksyon o libingan...")}
-              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-            />
+      {!showingDirections && (
+        <div className="px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 flex items-center gap-2 px-3 py-2.5 bg-[#e8f0e8] dark:bg-[#1a472a]/30 rounded-lg">
+              <MapPin className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
+              <input
+                type="text"
+                placeholder={t("Search section or grave...", "Maghanap ng seksyon o libingan...")}
+                className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+              />
+            </div>
+            <button className="w-10 h-10 flex items-center justify-center bg-[#1a472a] rounded-lg text-white hover:bg-[#1a472a]/90 transition-colors">
+              <Navigation className="w-5 h-5" />
+              <span className="sr-only">{t("Navigate", "Mag-navigate")}</span>
+            </button>
           </div>
-          <button className="w-10 h-10 flex items-center justify-center bg-[#1a472a] rounded-lg text-white hover:bg-[#1a472a]/90 transition-colors">
-            <Navigation className="w-5 h-5" />
-            <span className="sr-only">{t("Navigate", "Mag-navigate")}</span>
-          </button>
         </div>
-      </div>
+      )}
 
       {/* Map View */}
       <div 
@@ -101,11 +133,17 @@ export function MapSection() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/cemetery-map.png"
-            alt={t(
-              "Anahao Public Cemetery satellite view showing roads, buildings with red roof, and surrounding vegetation",
-              "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
-            )}
+            src={showingDirections ? "/images/directions-map.png" : "/images/cemetery-map.png"}
+            alt={showingDirections 
+              ? t(
+                  "Directions to grave with route highlighted",
+                  "Mga direksyon sa libingan na may nilagyan na ruta"
+                )
+              : t(
+                  "Anahao Public Cemetery satellite view showing roads, buildings with red roof, and surrounding vegetation",
+                  "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
+                )
+            }
             className="w-full h-full object-cover pointer-events-none"
             draggable={false}
           />

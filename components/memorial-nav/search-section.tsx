@@ -54,7 +54,7 @@ const recentSearches: DeceasedInfo[] = [
 ]
 
 interface SearchSectionProps {
-  onNavigateToMap?: () => void
+  onNavigateToMap?: (deceased: DeceasedInfo) => void
 }
 
 export function SearchSection({ onNavigateToMap }: SearchSectionProps) {
@@ -62,8 +62,8 @@ export function SearchSection({ onNavigateToMap }: SearchSectionProps) {
   const { t } = useLanguage()
 
   const handleDirections = () => {
-    if (onNavigateToMap) {
-      onNavigateToMap()
+    if (selectedDeceased && onNavigateToMap) {
+      onNavigateToMap(selectedDeceased)
     }
     setSelectedDeceased(null)
   }
