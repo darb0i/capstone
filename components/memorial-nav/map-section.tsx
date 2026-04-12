@@ -158,7 +158,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               {/* Destination Marker */}
               <div 
                 className="absolute pointer-events-none"
-                style={{ left: '62%', top: '28%', transform: 'translate(-50%, -100%)' }}
+                style={{ left: '65%', top: '40%', transform: 'translate(-50%, -100%)' }}
               >
                 <div className="relative flex flex-col items-center">
                   {/* Pin */}
