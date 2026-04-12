@@ -38,6 +38,7 @@ export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetai
         block: deceased.block,
         row: deceased.row,
         graveNumber: deceased.graveNumber,
+        deathDate: deceased.deathDate,
       })
     }
   }
@@ -88,7 +89,7 @@ export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetai
             <div className="mt-3 pt-3 border-t border-white/20">
               <p className="text-xs text-white/70 flex items-center gap-1.5">
                 <BookmarkCheck className="w-3.5 h-3.5" />
-                {t("You will be notified if this grave is moved", "Maabisuhan ka kung ililipat ang libingang ito")}
+                {t("You will be notified of grave changes and death anniversaries", "Maabisuhan ka sa mga pagbabago ng libingan at anibersaryo ng kamatayan")}
               </p>
             </div>
           )}

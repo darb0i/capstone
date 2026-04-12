@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react"
 
 export interface BookmarkedDeceased {
   id: string
@@ -43,7 +43,18 @@ export interface DeathAnniversaryNotification {
   read: boolean
 }
 
-export type AppNotification = GraveMovedNotification | DeathAnniversaryNotification
+export interface ReservationApprovedNotification {
+  id: string
+  type: "reservation_approved"
+  section: string
+  block: string
+  row: string
+  lotNumber: string
+  approvedAt: string
+  read: boolean
+}
+
+export type AppNotification = GraveMovedNotification | DeathAnniversaryNotification | ReservationApprovedNotification
 
 interface BookmarkContextType {
   bookmarks: BookmarkedDeceased[]
@@ -69,61 +80,115 @@ const defaultContextValue: BookmarkContextType = {
 
 const BookmarkContext = createContext<BookmarkContextType>(defaultContextValue)
 
-// Example notifications to show on first load
-const exampleNotifications: AppNotification[] = [
-  {
-    id: "example-grave-moved-1",
-    type: "grave_moved",
-    deceasedName: "Maria Santos",
-    oldLocation: {
-      section: "Section A",
-      block: "Block 2",
-      row: "Row 3",
-      graveNumber: "15",
-    },
-    newLocation: {
-      section: "Section C",
-      block: "Block 1",
-      row: "Row 5",
-      graveNumber: "8",
-    },
-    movedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+// Helper function to calculate days until next anniversary
+function getDaysUntilAnniversary(deathDateStr: string): { daysUntil: number; yearsAgo: number } {
+  const deathDate = new Date(deathDateStr)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  
+  const deathMonth = deathDate.getMonth()
+  const deathDay = deathDate.getDate()
+  const deathYear = deathDate.getFullYear()
+  
+  // Create this year's anniversary date
+  let nextAnniversary = new Date(today.getFullYear(), deathMonth, deathDay)
+  nextAnniversary.setHours(0, 0, 0, 0)
+  
+  // If anniversary has passed this year, use next year
+  if (nextAnniversary < today) {
+    nextAnniversary = new Date(today.getFullYear() + 1, deathMonth, deathDay)
+  }
+  
+  const diffTime = nextAnniversary.getTime() - today.getTime()
+  const daysUntil = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  
+  // Calculate years since death (for the upcoming anniversary)
+  const yearsAgo = nextAnniversary.getFullYear() - deathYear
+  
+  return { daysUntil, yearsAgo }
+}
+
+// Generate death anniversary notification for all bookmarked graves
+function generateAnniversaryNotification(bookmark: BookmarkedDeceased): DeathAnniversaryNotification | null {
+  if (!bookmark.deathDate) return null
+  
+  const { daysUntil, yearsAgo } = getDaysUntilAnniversary(bookmark.deathDate)
+  
+  // Always generate anniversary notification for bookmarked graves
+  return {
+    id: `anniversary-${bookmark.id}-${new Date().getFullYear()}`,
+    type: "death_anniversary",
+    deceasedName: bookmark.name,
+    deathDate: bookmark.deathDate,
+    yearsAgo,
+    daysUntil,
     read: false,
-  },
-]
+  }
+}
 
 export function BookmarkProvider({ children }: { children: ReactNode }) {
   const [bookmarks, setBookmarks] = useState<BookmarkedDeceased[]>([])
   const [notifications, setNotifications] = useState<AppNotification[]>([])
   const [mounted, setMounted] = useState(false)
 
+  // Check for upcoming anniversaries and generate notifications
+  const checkAnniversaries = useCallback((currentBookmarks: BookmarkedDeceased[], currentNotifications: AppNotification[]) => {
+    const newNotifications: AppNotification[] = []
+    
+    for (const bookmark of currentBookmarks) {
+      const notification = generateAnniversaryNotification(bookmark)
+      if (notification) {
+        // Check if we already have this notification (avoid duplicates)
+        const exists = currentNotifications.some(n => n.id === notification.id)
+        if (!exists) {
+          newNotifications.push(notification)
+        }
+      }
+    }
+    
+    return newNotifications
+  }, [])
+
   // Load bookmarks and notifications from localStorage
   useEffect(() => {
     setMounted(true)
+    let loadedBookmarks: BookmarkedDeceased[] = []
+    let loadedNotifications: AppNotification[] = []
+    
     const storedBookmarks = localStorage.getItem("memorial-nav-bookmarks")
     if (storedBookmarks) {
       try {
-        setBookmarks(JSON.parse(storedBookmarks))
+        loadedBookmarks = JSON.parse(storedBookmarks)
+        setBookmarks(loadedBookmarks)
       } catch {
         // Use default if parse fails
       }
     }
-    const storedNotifications = localStorage.getItem("memorial-nav-grave-notifications")
-    const hasSeenExamples = localStorage.getItem("memorial-nav-examples-shown")
     
+    const storedNotifications = localStorage.getItem("memorial-nav-grave-notifications")
     if (storedNotifications) {
       try {
-        setNotifications(JSON.parse(storedNotifications))
+        loadedNotifications = JSON.parse(storedNotifications)
       } catch {
         // Use default if parse fails
       }
-    } else if (!hasSeenExamples) {
-      // Show example notifications on first load
-      setNotifications(exampleNotifications)
-      localStorage.setItem("memorial-nav-grave-notifications", JSON.stringify(exampleNotifications))
-      localStorage.setItem("memorial-nav-examples-shown", "true")
     }
-  }, [])
+    
+    // Only show notifications if user has bookmarked graves
+    // And check for upcoming anniversaries
+    if (loadedBookmarks.length > 0) {
+      const anniversaryNotifications = checkAnniversaries(loadedBookmarks, loadedNotifications)
+      const allNotifications = [...loadedNotifications, ...anniversaryNotifications]
+      setNotifications(allNotifications)
+      if (anniversaryNotifications.length > 0) {
+        localStorage.setItem("memorial-nav-grave-notifications", JSON.stringify(allNotifications))
+      }
+    } else {
+      // No bookmarks, clear any notifications
+      setNotifications([])
+      localStorage.removeItem("memorial-nav-grave-notifications")
+    }
+  }, [checkAnniversaries])
 
   // Save bookmarks to localStorage
   const saveBookmarks = (newBookmarks: BookmarkedDeceased[]) => {
@@ -145,11 +210,60 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
       id: `bookmark-${Date.now()}`,
       bookmarkedAt: new Date().toISOString(),
     }
-    saveBookmarks([...bookmarks, newBookmark])
+    
+    const updatedBookmarks = [...bookmarks, newBookmark]
+    saveBookmarks(updatedBookmarks)
+    
+    // Generate example notifications when bookmarking
+    const newNotifications: AppNotification[] = [...notifications]
+    
+    // Add grave relocation notification (example)
+    const graveMovedNotification: GraveMovedNotification = {
+      id: `grave-moved-${newBookmark.id}`,
+      type: "grave_moved",
+      deceasedName: deceased.name,
+      oldLocation: {
+        section: "Section A",
+        block: "Block 2",
+        row: "Row 3",
+        graveNumber: "15",
+      },
+      newLocation: {
+        section: deceased.section,
+        block: deceased.block,
+        row: deceased.row,
+        graveNumber: deceased.graveNumber,
+      },
+      movedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+      read: false,
+    }
+    newNotifications.push(graveMovedNotification)
+    
+    // Add death anniversary notification
+    const anniversaryNotification = generateAnniversaryNotification(newBookmark)
+    if (anniversaryNotification) {
+      newNotifications.push(anniversaryNotification)
+    }
+    
+    saveNotifications(newNotifications)
   }
 
   const removeBookmark = (name: string) => {
+    const bookmarkToRemove = bookmarks.find(b => b.name === name)
     saveBookmarks(bookmarks.filter(b => b.name !== name))
+    
+    // Remove all notifications for this bookmark (anniversary and grave moved)
+    if (bookmarkToRemove) {
+      const updatedNotifications = notifications.filter(n => {
+        if (n.type === "death_anniversary" || n.type === "grave_moved") {
+          return n.deceasedName !== name
+        }
+        return true
+      })
+      if (updatedNotifications.length !== notifications.length) {
+        saveNotifications(updatedNotifications)
+      }
+    }
   }
 
   const isBookmarked = (name: string) => {
