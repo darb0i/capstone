@@ -199,7 +199,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
 
         {/* Navigation Indicator */}
         {navigationTarget && (
-          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20">
+          <div className="absolute bottom-4 left-4 right-20 z-20">
             <div className="flex items-center gap-2 bg-[#1a472a] text-white px-4 py-2.5 rounded-full shadow-xl">
               <div className="w-6 h-6 flex items-center justify-center bg-[#4ade80] rounded-full flex-shrink-0">
                 <Navigation className="w-3.5 h-3.5 text-[#1a472a] fill-[#1a472a]" />
