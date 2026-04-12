@@ -28,7 +28,7 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
   // Auto-zoom when directions are shown
   useEffect(() => {
     if (showingDirections) {
-      setZoom(1.5)
+      setZoom(2.2)
       setPosition({ x: 0, y: 0 })
     } else {
       setZoom(1)
@@ -155,7 +155,7 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
                   "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
                 )
             }
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
         </div>
