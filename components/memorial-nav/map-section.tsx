@@ -123,53 +123,42 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
             draggable={false}
           />
           
-          {/* Navigation Route Overlay */}
+          {/* Navigation Route Overlay with markers inside SVG */}
           {navigationTarget && (
-            <>
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 400 400"
+              preserveAspectRatio="xMidYMid slice"
+            >
               {/* Navigation Route Line */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 400 400"
-                preserveAspectRatio="xMidYMid slice"
-              >
-                <path
-                  d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
-                  fill="none"
-                  stroke="#60a5fa"
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  opacity="0.9"
-                />
-              </svg>
+              <path
+                d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                fill="none"
+                stroke="#60a5fa"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.9"
+              />
 
-              {/* User Location Marker */}
-              <div 
-                className="absolute pointer-events-none"
-                style={{ left: '15%', bottom: '18%', transform: 'translate(-50%, 50%)' }}
-              >
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-full border-[3px] border-[#3b82f6] bg-[#3b82f6]/20 flex items-center justify-center">
-                    <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[14px] border-b-[#3b82f6] rotate-[-35deg]" />
-                  </div>
-                </div>
-              </div>
+              {/* User Location Marker - at start of path (80, 320) */}
+              <g transform="translate(80, 320)">
+                <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
+                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(-35)" />
+              </g>
 
-              {/* Destination Marker */}
-              <div 
-                className="absolute pointer-events-none"
-                style={{ left: '65%', top: '40%', transform: 'translate(-50%, -100%)' }}
-              >
-                <div className="relative flex flex-col items-center">
-                  {/* Pin */}
-                  <div className="w-10 h-10 bg-[#a3e635] rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-                    <div className="w-3 h-3 bg-white rounded-full" />
-                  </div>
-                  {/* Pin point */}
-                  <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-[#a3e635] -mt-1" />
-                </div>
-              </div>
-            </>
+              {/* Destination Marker - at end of path (260, 160) */}
+              <g transform="translate(260, 160)">
+                {/* Pin shadow */}
+                <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
+                {/* Pin point */}
+                <polygon points="0,16 -8,0 8,0" fill="#a3e635" />
+                {/* Pin circle */}
+                <circle cx="0" cy="-8" r="14" fill="#a3e635" stroke="white" strokeWidth="2" />
+                {/* Pin center dot */}
+                <circle cx="0" cy="-8" r="5" fill="white" />
+              </g>
+            </svg>
           )}
         </div>
 
