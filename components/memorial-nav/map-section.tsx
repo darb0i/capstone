@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useCallback, useEffect } from "react"
-import { Compass, MapPin, Navigation, ZoomIn, ZoomOut } from "lucide-react"
+import { Compass, MapPin, Navigation, ZoomIn, ZoomOut, CheckCircle2 } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
 interface MapSectionProps {
@@ -160,21 +160,6 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
           />
         </div>
 
-        {/* Navigation Status Banner */}
-        {showingDirections && (
-          <div className="absolute top-4 left-4 right-4 bg-[#1a472a] dark:bg-[#1a472a] rounded-lg px-4 py-3 shadow-lg z-20">
-            <div className="flex items-center gap-2">
-              <Navigation className="w-5 h-5 text-[#4ade80]" />
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  {t("Navigating to", "Nag-navigate patungo sa")}
-                </p>
-                <p className="text-xs text-[#4ade80]">{selectedDeceased.name}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Zoom Controls */}
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
           <button 
@@ -199,15 +184,27 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
           </button>
         </div>
 
-        {/* Stop Navigating Button */}
+        {/* Navigation Controls at Bottom Center */}
         {showingDirections && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-10">
+            {/* Navigation Status */}
+            <div className="bg-[#1a472a] dark:bg-[#1a472a] rounded-full px-4 py-2.5 shadow-lg flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-[#4ade80]" />
+              <div>
+                <p className="text-xs text-[#4ade80]">
+                  {t("Navigating to", "Nag-navigate patungo sa")}
+                </p>
+                <p className="text-sm font-semibold text-white">{selectedDeceased.name}</p>
+              </div>
+            </div>
+            
+            {/* Stop Button */}
             <button 
               onClick={onClearDirections}
-              className="px-6 py-2.5 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 rounded-full shadow-lg text-white font-semibold text-sm transition-colors"
+              className="w-10 h-10 flex items-center justify-center bg-red-500 hover:bg-red-600 rounded-full shadow-lg text-white font-bold transition-colors"
+              aria-label={t("Stop Navigating", "Ihinto ang Pag-navigate")}
             >
-              <span>✕</span>
-              {t("Stop Navigating", "Ihinto ang Pag-navigate")}
+              ×
             </button>
           </div>
         )}
