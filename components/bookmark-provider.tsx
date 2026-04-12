@@ -9,6 +9,7 @@ export interface BookmarkedDeceased {
   block: string
   row: string
   graveNumber: string
+  deathDate: string
   bookmarkedAt: string
 }
 
@@ -32,18 +33,17 @@ export interface GraveMovedNotification {
   read: boolean
 }
 
-export interface ReservationApprovedNotification {
+export interface DeathAnniversaryNotification {
   id: string
-  type: "reservation_approved"
-  section: string
-  block: string
-  row: string
-  lotNumber: string
-  approvedAt: string
+  type: "death_anniversary"
+  deceasedName: string
+  deathDate: string
+  yearsAgo: number
+  daysUntil: number
   read: boolean
 }
 
-export type AppNotification = GraveMovedNotification | ReservationApprovedNotification
+export type AppNotification = GraveMovedNotification | DeathAnniversaryNotification
 
 interface BookmarkContextType {
   bookmarks: BookmarkedDeceased[]
@@ -88,16 +88,6 @@ const exampleNotifications: AppNotification[] = [
       graveNumber: "8",
     },
     movedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-    read: false,
-  },
-  {
-    id: "example-reservation-1",
-    type: "reservation_approved",
-    section: "Section B",
-    block: "Block 4",
-    row: "Row 2",
-    lotNumber: "12",
-    approvedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
     read: false,
   },
 ]
