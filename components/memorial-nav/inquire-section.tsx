@@ -13,7 +13,6 @@ interface Lot {
   section: string
   block: string
   price: number
-  status: "available" | "reserved"
 }
 
 interface LotTypeInfo {
@@ -72,28 +71,28 @@ const lotTypes: LotTypeInfo[] = [
 
 const lotsData: Record<string, Lot[]> = {
   mausoleum: [
-    { id: "M001", name: "Mausoleum A - Unit 1", section: "A", block: "1", price: 60000, status: "available" },
-    { id: "M002", name: "Mausoleum A - Unit 2", section: "A", block: "2", price: 60000, status: "reserved" },
-    { id: "M003", name: "Mausoleum B - Unit 1", section: "B", block: "1", price: 60000, status: "available" },
-    { id: "M004", name: "Mausoleum B - Unit 2", section: "B", block: "2", price: 60000, status: "available" },
-    { id: "M005", name: "Mausoleum C - Unit 1", section: "C", block: "1", price: 60000, status: "reserved" },
-    { id: "M006", name: "Mausoleum C - Unit 2", section: "C", block: "2", price: 60000, status: "available" },
+    { id: "M001", name: "Mausoleum A - Unit 1", section: "A", block: "1", price: 60000 },
+    { id: "M002", name: "Mausoleum A - Unit 2", section: "A", block: "2", price: 60000 },
+    { id: "M003", name: "Mausoleum B - Unit 1", section: "B", block: "1", price: 60000 },
+    { id: "M004", name: "Mausoleum B - Unit 2", section: "B", block: "2", price: 60000 },
+    { id: "M005", name: "Mausoleum C - Unit 1", section: "C", block: "1", price: 60000 },
+    { id: "M006", name: "Mausoleum C - Unit 2", section: "C", block: "2", price: 60000 },
   ],
   garden: [
-    { id: "G001", name: "Garden of Peace - Lot 1", section: "Peace", block: "1", price: 5000, status: "available" },
-    { id: "G002", name: "Garden of Peace - Lot 2", section: "Peace", block: "2", price: 5000, status: "available" },
-    { id: "G003", name: "Garden of Serenity - Lot 1", section: "Serenity", block: "1", price: 5000, status: "reserved" },
-    { id: "G004", name: "Garden of Serenity - Lot 2", section: "Serenity", block: "2", price: 5000, status: "available" },
-    { id: "G005", name: "Garden of Hope - Lot 1", section: "Hope", block: "1", price: 5000, status: "available" },
-    { id: "G006", name: "Garden of Hope - Lot 2", section: "Hope", block: "2", price: 5000, status: "reserved" },
+    { id: "G001", name: "Garden of Peace - Lot 1", section: "Peace", block: "1", price: 5000 },
+    { id: "G002", name: "Garden of Peace - Lot 2", section: "Peace", block: "2", price: 5000 },
+    { id: "G003", name: "Garden of Serenity - Lot 1", section: "Serenity", block: "1", price: 5000 },
+    { id: "G004", name: "Garden of Serenity - Lot 2", section: "Serenity", block: "2", price: 5000 },
+    { id: "G005", name: "Garden of Hope - Lot 1", section: "Hope", block: "1", price: 5000 },
+    { id: "G006", name: "Garden of Hope - Lot 2", section: "Hope", block: "2", price: 5000 },
   ],
   apartment: [
-    { id: "A001", name: "Apartment Level 1 - Niche A1", section: "Level 1", block: "A", price: 2250, status: "available" },
-    { id: "A002", name: "Apartment Level 1 - Niche A2", section: "Level 1", block: "A", price: 2250, status: "available" },
-    { id: "A003", name: "Apartment Level 2 - Niche B1", section: "Level 2", block: "B", price: 2250, status: "reserved" },
-    { id: "A004", name: "Apartment Level 2 - Niche B2", section: "Level 2", block: "B", price: 2250, status: "available" },
-    { id: "A005", name: "Apartment Level 3 - Niche C1", section: "Level 3", block: "C", price: 2250, status: "available" },
-    { id: "A006", name: "Apartment Level 3 - Niche C2", section: "Level 3", block: "C", price: 2250, status: "reserved" },
+    { id: "A001", name: "Apartment Level 1 - Niche A1", section: "Level 1", block: "A", price: 2250 },
+    { id: "A002", name: "Apartment Level 1 - Niche A2", section: "Level 1", block: "A", price: 2250 },
+    { id: "A003", name: "Apartment Level 2 - Niche B1", section: "Level 2", block: "B", price: 2250 },
+    { id: "A004", name: "Apartment Level 2 - Niche B2", section: "Level 2", block: "B", price: 2250 },
+    { id: "A005", name: "Apartment Level 3 - Niche C1", section: "Level 3", block: "C", price: 2250 },
+    { id: "A006", name: "Apartment Level 3 - Niche C2", section: "Level 3", block: "C", price: 2250 },
   ],
 }
 
@@ -182,7 +181,7 @@ export function InquireSection() {
   // Browse Lots View
   if (viewState === "browse-lots" && selectedType && currentLotType) {
     const title = language === "en" ? currentLotType.titleEn : currentLotType.titleTl
-    const availableCount = availableLots.filter(l => l.status === "available").length
+    const availableCount = availableLots.length
 
     return (
       <div className="flex-1 flex flex-col bg-background min-h-0">
@@ -209,23 +208,16 @@ export function InquireSection() {
             {availableLots.map((lot) => (
               <button
                 key={lot.id}
-                onClick={() => lot.status === "available" && handleSelectLot(lot)}
-                disabled={lot.status === "reserved"}
-                className={`w-full p-4 rounded-xl border text-left transition-all ${lot.status === "available"
-                    ? "bg-card border-border hover:border-[#1a472a]/50 hover:shadow-md"
-                    : "bg-muted border-border opacity-60 cursor-not-allowed"
-                  }`}
+                onClick={() => handleSelectLot(lot)}
+                className="w-full p-4 rounded-xl border text-left transition-all bg-card border-border hover:border-[#1a472a]/50 hover:shadow-md"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
                     <span className="font-semibold text-foreground">{lot.name}</span>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${lot.status === "available"
-                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
-                    }`}>
-                    {lot.status === "available" ? t("Available", "Available") : t("Reserved", "Nakareserba")}
+                  <span className="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                    {t("Available", "Available")}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
