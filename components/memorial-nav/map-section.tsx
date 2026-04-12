@@ -144,7 +144,7 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
                   "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
                 )
             }
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
         </div>
