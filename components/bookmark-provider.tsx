@@ -108,26 +108,22 @@ function getDaysUntilAnniversary(deathDateStr: string): { daysUntil: number; yea
   return { daysUntil, yearsAgo }
 }
 
-// Generate death anniversary notification if within 7 days
+// Generate death anniversary notification for all bookmarked graves
 function generateAnniversaryNotification(bookmark: BookmarkedDeceased): DeathAnniversaryNotification | null {
   if (!bookmark.deathDate) return null
   
   const { daysUntil, yearsAgo } = getDaysUntilAnniversary(bookmark.deathDate)
   
-  // Notify if anniversary is within 7 days
-  if (daysUntil <= 7 && daysUntil >= 0) {
-    return {
-      id: `anniversary-${bookmark.id}-${new Date().getFullYear()}`,
-      type: "death_anniversary",
-      deceasedName: bookmark.name,
-      deathDate: bookmark.deathDate,
-      yearsAgo,
-      daysUntil,
-      read: false,
-    }
+  // Always generate anniversary notification for bookmarked graves
+  return {
+    id: `anniversary-${bookmark.id}-${new Date().getFullYear()}`,
+    type: "death_anniversary",
+    deceasedName: bookmark.name,
+    deathDate: bookmark.deathDate,
+    yearsAgo,
+    daysUntil,
+    read: false,
   }
-  
-  return null
 }
 
 export function BookmarkProvider({ children }: { children: ReactNode }) {
