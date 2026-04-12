@@ -1,10 +1,23 @@
 "use client"
 
 import { useState, useRef, useCallback } from "react"
-import { Compass, MapPin, Navigation, ZoomIn, ZoomOut } from "lucide-react"
+import { Compass, MapPin, Navigation, ZoomIn, ZoomOut, X } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
-export function MapSection() {
+interface NavigationTarget {
+  name: string
+  section: string
+  block: string
+  row: string
+  graveNumber: string
+}
+
+interface MapSectionProps {
+  navigationTarget?: NavigationTarget | null
+  onCancelNavigation?: () => void
+}
+
+export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionProps) {
   const [zoom, setZoom] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
@@ -109,6 +122,44 @@ export function MapSection() {
             className="w-full h-full object-cover pointer-events-none"
             draggable={false}
           />
+          
+          {/* Navigation Route Overlay with markers inside SVG */}
+          {navigationTarget && (
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 400 400"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              {/* Navigation Route Line */}
+              <path
+                d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                fill="none"
+                stroke="#60a5fa"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.9"
+              />
+
+              {/* User Location Marker - positioned so arrow tip is at line start (80, 320) */}
+              <g transform="translate(67, 333)">
+                <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
+                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(45) translate(0, -8)" />
+              </g>
+
+              {/* Destination Marker - at end of path (260, 160) */}
+              <g transform="translate(260, 160)">
+                {/* Pin shadow */}
+                <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
+                {/* Pin point */}
+                <polygon points="0,16 -8,0 8,0" fill="#a3e635" />
+                {/* Pin circle */}
+                <circle cx="0" cy="-8" r="14" fill="#a3e635" stroke="white" strokeWidth="2" />
+                {/* Pin center dot */}
+                <circle cx="0" cy="-8" r="5" fill="white" />
+              </g>
+            </svg>
+          )}
         </div>
 
         {/* Zoom Controls */}
@@ -134,6 +185,28 @@ export function MapSection() {
             {t("Reset", "Reset")}
           </button>
         </div>
+
+        {/* Navigation Indicator */}
+        {navigationTarget && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 mr-16">
+            <div className="flex items-center gap-3 bg-[#1a472a] text-white px-5 py-3 rounded-full shadow-xl">
+              <div className="w-7 h-7 flex items-center justify-center bg-[#4ade80] rounded-full flex-shrink-0">
+                <Navigation className="w-4 h-4 text-[#1a472a] fill-[#1a472a]" />
+              </div>
+              <div>
+                <p className="text-xs text-white/70">{t("Navigating to", "Papunta sa")}</p>
+                <p className="font-semibold text-white whitespace-nowrap">{navigationTarget.name}</p>
+              </div>
+              <button
+                onClick={onCancelNavigation}
+                className="w-8 h-8 flex items-center justify-center bg-red-500 rounded-full flex-shrink-0 hover:bg-red-600 transition-colors"
+                aria-label={t("Cancel navigation", "Kanselahin ang navigasyon")}
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
