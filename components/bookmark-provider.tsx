@@ -43,7 +43,18 @@ export interface DeathAnniversaryNotification {
   read: boolean
 }
 
-export type AppNotification = GraveMovedNotification | DeathAnniversaryNotification
+export interface ReservationApprovedNotification {
+  id: string
+  type: "reservation_approved"
+  section: string
+  block: string
+  row: string
+  lotNumber: string
+  approvedAt: string
+  read: boolean
+}
+
+export type AppNotification = GraveMovedNotification | DeathAnniversaryNotification | ReservationApprovedNotification
 
 interface BookmarkContextType {
   bookmarks: BookmarkedDeceased[]
