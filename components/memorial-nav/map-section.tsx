@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { Compass, MapPin, Navigation, ZoomIn, ZoomOut } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
@@ -24,6 +24,17 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
   const containerRef = useRef<HTMLDivElement>(null)
   const { t } = useLanguage()
   const showingDirections = !!selectedDeceased
+
+  // Auto-zoom when directions are shown
+  useEffect(() => {
+    if (showingDirections) {
+      setZoom(1.5)
+      setPosition({ x: 0, y: 0 })
+    } else {
+      setZoom(1)
+      setPosition({ x: 0, y: 0 })
+    }
+  }, [showingDirections])
 
   const handleZoomIn = () => {
     setZoom(prev => Math.min(prev + 0.2, 3))
@@ -144,7 +155,7 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
                   "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
                 )
             }
-            className="w-full h-full object-contain pointer-events-none"
+            className="w-full h-full object-cover pointer-events-none"
             draggable={false}
           />
         </div>
