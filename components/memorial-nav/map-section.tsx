@@ -31,7 +31,7 @@ export function MapSection({ selectedDeceased, onClearDirections }: MapSectionPr
       setZoom(2.2)
       setPosition({ x: 0, y: 0 })
     } else {
-      setZoom(1)
+      setZoom(2)
       setPosition({ x: 0, y: 0 })
     }
   }, [showingDirections])
