@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Bell, MapPin, CheckCircle, X } from "lucide-react"
+import { Bell, MapPin, CheckCircle, X, Calendar } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { useBookmarks, type AppNotification } from "@/components/bookmark-provider"
 
@@ -94,6 +94,40 @@ export function Header() {
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                   {new Date(notification.movedAt).toLocaleDateString()}
+                                </p>
+                              </div>
+                              <button
+                                onClick={() => markNotificationAsRead(notification.id)}
+                                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded flex-shrink-0"
+                              >
+                                <X className="w-3.5 h-3.5 text-muted-foreground" />
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      } else if (notification.type === "death_anniversary") {
+                        return (
+                          <div 
+                            key={notification.id} 
+                            className={`p-3 hover:bg-muted/50 transition-colors ${!notification.read ? "bg-amber-50 dark:bg-amber-900/20" : ""}`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full ${notification.read ? "bg-gray-200 dark:bg-gray-700" : "bg-amber-500"}`}>
+                                <Calendar className={`w-4 h-4 ${notification.read ? "text-gray-500" : "text-white"}`} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-foreground text-sm">{notification.deceasedName}</p>
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                  {notification.daysUntil === 0 
+                                    ? t("Death anniversary is today", "Anibersaryo ng kamatayan ngayon")
+                                    : notification.daysUntil === 1
+                                    ? t("Death anniversary is tomorrow", "Anibersaryo ng kamatayan bukas")
+                                    : t(`Death anniversary in ${notification.daysUntil} days`, `Anibersaryo ng kamatayan sa ${notification.daysUntil} araw`)}
+                                </p>
+                                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mt-0.5">
+                                  {notification.yearsAgo} {notification.yearsAgo === 1 ? t("year", "taon") : t("years", "taon")} 
+                                  {" - "}
+                                  {new Date(notification.deathDate).toLocaleDateString(undefined, { month: "long", day: "numeric" })}
                                 </p>
                               </div>
                               <button
