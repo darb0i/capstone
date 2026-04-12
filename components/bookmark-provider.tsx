@@ -214,22 +214,48 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
     const updatedBookmarks = [...bookmarks, newBookmark]
     saveBookmarks(updatedBookmarks)
     
-    // Check if this bookmarked grave has an upcoming anniversary
+    // Generate example notifications when bookmarking
+    const newNotifications: AppNotification[] = [...notifications]
+    
+    // Add grave relocation notification (example)
+    const graveMovedNotification: GraveMovedNotification = {
+      id: `grave-moved-${newBookmark.id}`,
+      type: "grave_moved",
+      deceasedName: deceased.name,
+      oldLocation: {
+        section: "Section A",
+        block: "Block 2",
+        row: "Row 3",
+        graveNumber: "15",
+      },
+      newLocation: {
+        section: deceased.section,
+        block: deceased.block,
+        row: deceased.row,
+        graveNumber: deceased.graveNumber,
+      },
+      movedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+      read: false,
+    }
+    newNotifications.push(graveMovedNotification)
+    
+    // Add death anniversary notification
     const anniversaryNotification = generateAnniversaryNotification(newBookmark)
     if (anniversaryNotification) {
-      const updatedNotifications = [...notifications, anniversaryNotification]
-      saveNotifications(updatedNotifications)
+      newNotifications.push(anniversaryNotification)
     }
+    
+    saveNotifications(newNotifications)
   }
 
   const removeBookmark = (name: string) => {
     const bookmarkToRemove = bookmarks.find(b => b.name === name)
     saveBookmarks(bookmarks.filter(b => b.name !== name))
     
-    // Remove any anniversary notifications for this bookmark
+    // Remove all notifications for this bookmark (anniversary and grave moved)
     if (bookmarkToRemove) {
       const updatedNotifications = notifications.filter(n => {
-        if (n.type === "death_anniversary") {
+        if (n.type === "death_anniversary" || n.type === "grave_moved") {
           return n.deceasedName !== name
         }
         return true
