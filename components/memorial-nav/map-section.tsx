@@ -144,7 +144,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               {/* User Location Marker - at start of path (80, 320) */}
               <g transform="translate(80, 320)">
                 <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
-                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(-35)" />
+                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(45)" />
               </g>
 
               {/* Destination Marker - at end of path (260, 160) */}
