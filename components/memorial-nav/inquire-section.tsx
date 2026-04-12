@@ -366,7 +366,7 @@ export function InquireSection() {
             onClick={handleReserveLot}
             className="flex-1 py-3 px-4 rounded-xl bg-[#1a472a] text-white font-semibold hover:bg-[#1a472a]/90 transition-colors"
           >
-            {t("Reserve Lot", "Mag-reserve ng Lote")}
+            {t("Contact Us", "Makipag-ugnayan sa Amin")}
           </button>
         </div>
       </div>
