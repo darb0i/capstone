@@ -9,6 +9,7 @@ export interface BookmarkedDeceased {
   block: string
   row: string
   graveNumber: string
+  deathDate: string
   bookmarkedAt: string
 }
 
@@ -32,7 +33,17 @@ export interface GraveMovedNotification {
   read: boolean
 }
 
-export type AppNotification = GraveMovedNotification
+export interface DeathAnniversaryNotification {
+  id: string
+  type: "death_anniversary"
+  deceasedName: string
+  deathDate: string
+  yearsAgo: number
+  daysUntil: number
+  read: boolean
+}
+
+export type AppNotification = GraveMovedNotification | DeathAnniversaryNotification
 
 interface BookmarkContextType {
   bookmarks: BookmarkedDeceased[]
