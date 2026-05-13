@@ -84,7 +84,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
             <MapPin className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
             <input
               type="text"
-              placeholder={t("Search section or grave...", "Maghanap ng seksyon o libingan...")}
+              placeholder={t("Search lots or deaceased...", "Hanapin ang lupa o labi...")}
               className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </div>
