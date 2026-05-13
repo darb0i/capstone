@@ -1,8 +1,7 @@
 "use client"
 
-import { MapPin, Calendar, User, Flower2, ArrowLeft, Navigation, Bookmark, BookmarkCheck } from "lucide-react"
+import { MapPin, Calendar, User, Flower2, ArrowLeft, Navigation } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
-import { useBookmarks } from "@/components/bookmark-provider"
 
 interface DeceasedInfo {
   name: string
@@ -24,24 +23,6 @@ interface DeceasedDetailProps {
 
 export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetailProps) {
   const { t } = useLanguage()
-  const { isBookmarked, addBookmark, removeBookmark } = useBookmarks()
-
-  const bookmarked = isBookmarked(deceased.name)
-
-  const handleBookmarkToggle = () => {
-    if (bookmarked) {
-      removeBookmark(deceased.name)
-    } else {
-      addBookmark({
-        name: deceased.name,
-        section: deceased.section,
-        block: deceased.block,
-        row: deceased.row,
-        graveNumber: deceased.graveNumber,
-        deathDate: deceased.deathDate,
-      })
-    }
-  }
 
   return (
     <div className="flex-1 flex flex-col bg-background min-h-0">
@@ -69,30 +50,7 @@ export function DeceasedDetail({ deceased, onBack, onDirections }: DeceasedDetai
                 {deceased.age} {t("years old", "taong gulang")}
               </p>
             </div>
-            <button
-              onClick={handleBookmarkToggle}
-              className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors ${
-                bookmarked 
-                  ? "bg-white text-[#1a472a]" 
-                  : "bg-white/20 text-white hover:bg-white/30"
-              }`}
-              title={bookmarked ? t("Remove bookmark", "Alisin ang bookmark") : t("Bookmark to get notified of grave changes", "I-bookmark para maabisuhan sa mga pagbabago ng libingan")}
-            >
-              {bookmarked ? (
-                <BookmarkCheck className="w-5 h-5" />
-              ) : (
-                <Bookmark className="w-5 h-5" />
-              )}
-            </button>
           </div>
-          {bookmarked && (
-            <div className="mt-3 pt-3 border-t border-white/20">
-              <p className="text-xs text-white/70 flex items-center gap-1.5">
-                <BookmarkCheck className="w-3.5 h-3.5" />
-                {t("You will be notified of grave changes and death anniversaries", "Maabisuhan ka sa mga pagbabago ng libingan at anibersaryo ng kamatayan")}
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Location Info */}

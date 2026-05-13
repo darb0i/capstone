@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Moon, Globe, Info, ChevronLeft, Sun, Smartphone, Bookmark, Trash2 } from "lucide-react"
+import { Moon, Globe, Info, ChevronLeft, Sun, Smartphone } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
-import { useBookmarks } from "@/components/bookmark-provider"
 
 type SettingsView = "main" | "appearance" | "language" | "about"
 
@@ -14,7 +13,6 @@ export function SettingsSection() {
 
   const { theme, setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
-  const { bookmarks, removeBookmark } = useBookmarks()
 
   useEffect(() => {
     setMounted(true)

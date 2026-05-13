@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { LanguageProvider } from '@/components/language-provider'
-import { BookmarkProvider } from '@/components/bookmark-provider'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -47,10 +46,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-              <BookmarkProvider>
-                {children}
-              </BookmarkProvider>
-            </LanguageProvider>
+            {children}
+          </LanguageProvider>
         </ThemeProvider>
         <Analytics />
       </body>
