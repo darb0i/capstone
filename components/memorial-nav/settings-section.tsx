@@ -87,48 +87,6 @@ export function SettingsSection() {
           })}
         </div>
 
-        {/* Bookmarked Graves Section */}
-        <div className="mt-6 pt-6 border-t border-border">
-          <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Bookmark className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
-            {t("Bookmarked Graves", "Mga Naka-bookmark na Libingan")}
-            {bookmarks.length > 0 && (
-              <span className="text-xs text-muted-foreground">({bookmarks.length})</span>
-            )}
-          </h3>
-          {bookmarks.length === 0 ? (
-            <div className="p-4 bg-card rounded-xl border border-border text-center">
-              <Bookmark className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">
-                {t("No bookmarked graves yet", "Wala pang naka-bookmark na libingan")}
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {bookmarks.map((bookmark) => (
-                <div key={bookmark.id} className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border">
-                  <div className="w-8 h-8 flex items-center justify-center bg-[#e8f0e8] dark:bg-[#1a472a]/30 rounded-full">
-                    <Bookmark className="w-4 h-4 text-[#1a472a] dark:text-[#4ade80]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-foreground text-sm">{bookmark.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {bookmark.section} {bookmark.block}-{bookmark.row}-{bookmark.graveNumber}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => removeBookmark(bookmark.name)}
-                    className="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
-                    title={t("Remove bookmark", "Alisin ang bookmark")}
-                  >
-                    <Trash2 className="w-4 h-4 text-red-500" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         {/* App Version */}
         <div className="mt-auto pt-6 text-center">
           <p className="text-sm text-muted-foreground">MemorialNav v1.0.0</p>
