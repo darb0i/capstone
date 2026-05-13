@@ -43,7 +43,7 @@ export default function MemorialNavApp() {
         {activeTab === "search" && (
           <SearchSection onNavigateToGrave={handleNavigateToGrave} />
         )}
-        {activeTab === "inquire" && <InquireSection />}
+        {activeTab === "lots" && <InquireSection />}
         {activeTab === "settings" && <SettingsSection />}
       </main>
 

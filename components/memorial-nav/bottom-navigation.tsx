@@ -12,7 +12,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: "maps", label: "Maps", icon: Map },
   { id: "search", label: "Search", icon: Search },
-  { id: "inquire", label: "Inquire", icon: MessageCircleQuestion },
+  { id: "lots", label: "Lots", icon: MessageCircleQuestion },
   { id: "settings", label: "Settings", icon: Settings },
 ]
 
