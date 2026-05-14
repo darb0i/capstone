@@ -71,10 +71,10 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
           <h2 className="font-semibold text-foreground">{t("Cemetery Map", "Mapa ng Sementeryo")}</h2>
           <p className="text-sm text-[#1a472a] dark:text-[#4ade80]">Anahao Public Cemetery</p>
         </div>
-        <button className="w-10 h-10 flex items-center justify-center border-2 border-[#1a472a] dark:border-[#4ade80] rounded-lg text-[#1a472a] dark:text-[#4ade80] hover:bg-[#1a472a]/5 transition-colors">
+        <div className="w-10 h-10 flex items-center justify-center border-2 border-[#1a472a] dark:border-[#4ade80] rounded-lg text-[#1a472a] dark:text-[#4ade80]">
           <Compass className="w-5 h-5" />
           <span className="sr-only">{t("Compass", "Compass")}</span>
-        </button>
+        </div>
       </div>
 
       {/* Search Bar */}
