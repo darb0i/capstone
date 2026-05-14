@@ -141,7 +141,7 @@ export function InquireSection() {
       <div className="flex-1 flex flex-col bg-background p-4 min-h-0 overflow-y-auto">
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-foreground mb-1">
-            {t("Inquire a Lot", "Magtanong Tungkol sa Lote")}
+            {t("Lot Information", "Impormasyon sa Lote")}
           </h2>
           <p className="text-sm text-muted-foreground">
             {t("Choose the type of burial lot you are looking for", "Piliin ang uri ng lote ng libing na iyong hinahanap")}
