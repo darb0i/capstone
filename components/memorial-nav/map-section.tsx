@@ -127,32 +127,32 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
           {navigationTarget && (
             <svg
               className="absolute inset-0 w-full h-full pointer-events-none"
-              viewBox="0 0 400 400"
+              viewBox="0 0 640 715"
               preserveAspectRatio="xMidYMid slice"
             >
-              {/* Navigation Route Line */}
+              {/* Navigation Route Line - Following the white roads on map */}
               <path
-                d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                d="M 335 680 L 335 550 Q 340 450 345 350 Q 348 280 420 220"
                 fill="none"
                 stroke="#60a5fa"
-                strokeWidth="8"
+                strokeWidth="12"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 opacity="0.9"
               />
 
-              {/* User Location Marker */}
-              <g transform="translate(67, 333)">
-                <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
-                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(45) translate(0, -8)" />
+              {/* User Location Marker - at bottom center on road */}
+              <g transform="translate(335, 680)">
+                <circle cx="0" cy="0" r="22" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
+                <polygon points="0,-12 8,10 -8,10" fill="#3b82f6" />
               </g>
 
-              {/* Destination Marker */}
-              <g transform="translate(260, 160)">
-                <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
-                <polygon points="0,16 -8,0 8,0" fill="#a3e635" />
-                <circle cx="0" cy="-8" r="14" fill="#a3e635" stroke="white" strokeWidth="2" />
-                <circle cx="0" cy="-8" r="5" fill="white" />
+              {/* Destination Marker - at mausoleum section */}
+              <g transform="translate(420, 220)">
+                <ellipse cx="0" cy="22" rx="10" ry="5" fill="rgba(0,0,0,0.2)" />
+                <polygon points="0,18 -10,0 10,0" fill="#a3e635" />
+                <circle cx="0" cy="-8" r="18" fill="#a3e635" stroke="white" strokeWidth="2" />
+                <circle cx="0" cy="-8" r="6" fill="white" />
               </g>
             </svg>
           )}
