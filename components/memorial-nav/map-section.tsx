@@ -142,7 +142,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               />
 
               {/* User Location Marker - at line start (bottom-left on road) */}
-              <g transform="translate(5, 285)">
+              <g transform="translate(5, 275)">
                 <circle cx="0" cy="0" r="14" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" strokeWidth="3" />
                 <polygon points="0,-8 5,6 -5,6" fill="#22c55e" transform="rotate(45) translate(0, -6)" />
               </g>
