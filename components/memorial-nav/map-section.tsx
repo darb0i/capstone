@@ -119,7 +119,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               "Cemetery map showing garden plots, mausoleum units, and apartment columbarium",
               "Mapa ng sementeryo na nagpapakita ng garden plots, mausoleum units, at apartment columbarium"
             )}
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
           
@@ -162,15 +162,15 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
         <div className="absolute bottom-4 left-4 z-20 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-gray-300 dark:border-gray-700 p-3">
           <p className="text-xs font-semibold text-foreground mb-2">{t("Legend", "Kalakaran")}</p>
           <div className="space-y-1.5">
-            {/* Garden Type - Yellow */}
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-              <span className="text-xs text-muted-foreground">{t("Garden", "Garden")}</span>
-            </div>
             {/* Mausoleum - Blue */}
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-blue-600"></div>
               <span className="text-xs text-muted-foreground">{t("Mausoleum", "Mausoleum")}</span>
+            </div>
+            {/* Garden Type - Yellow */}
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <span className="text-xs text-muted-foreground">{t("Garden", "Garden")}</span>
             </div>
             {/* Apartment - Red */}
             <div className="flex items-center gap-2">
