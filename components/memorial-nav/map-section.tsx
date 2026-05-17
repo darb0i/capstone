@@ -130,25 +130,25 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               viewBox="0 0 400 400"
               preserveAspectRatio="xMidYMid slice"
             >
-              {/* Navigation Route Line */}
+              {/* Navigation Route Line - follows the road path */}
               <path
-                d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                d="M 40 360 Q 80 340 120 300 Q 140 270 160 240 Q 180 220 200 200 Q 220 180 250 165 Q 280 150 310 130 Q 340 115 370 100"
                 fill="none"
-                stroke="#60a5fa"
-                strokeWidth="8"
+                stroke="#22c55e"
+                strokeWidth="6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 opacity="0.9"
               />
 
-              {/* User Location Marker - positioned so arrow tip is at line start (80, 320) */}
-              <g transform="translate(67, 333)">
-                <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
-                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(45) translate(0, -8)" />
+              {/* User Location Marker - at line start */}
+              <g transform="translate(40, 360)">
+                <circle cx="0" cy="0" r="18" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" strokeWidth="3" />
+                <polygon points="0,-10 6,8 -6,8" fill="#22c55e" transform="rotate(45) translate(0, -8)" />
               </g>
 
-              {/* Destination Marker - at end of path (260, 160) */}
-              <g transform="translate(260, 160)">
+              {/* Destination Marker - at end of path */}
+              <g transform="translate(370, 100)">
                 {/* Pin shadow */}
                 <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
                 {/* Pin point */}
