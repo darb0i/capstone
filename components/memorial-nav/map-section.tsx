@@ -98,7 +98,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
       {/* Map View */}
       <div 
         ref={containerRef}
-        className="flex-1 relative mx-4 mb-4 rounded-xl overflow-hidden bg-muted min-h-0 touch-none"
+        className="flex-1 relative mx-4 mb-4 rounded-xl overflow-hidden bg-[#e8dcc8] min-h-0 touch-none"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -112,27 +112,93 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
             transition: isDragging ? 'none' : 'transform 0.2s ease-out'
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/cemetery-map.png"
-            alt={t(
-              "Anahao Public Cemetery satellite view showing roads, buildings with red roof, and surrounding vegetation",
-              "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
-            )}
-            className="w-full h-full object-cover pointer-events-none"
-            draggable={false}
-          />
+          {/* Cemetery Map SVG */}
+          <svg
+            viewBox="0 0 600 700"
+            className="w-full h-full"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            {/* Background - Cemetery Grounds */}
+            <rect width="600" height="700" fill="#c8dcc0" />
+            
+            {/* Garden Type - Yellow Scattered Plots */}
+            <circle cx="120" cy="80" r="3" fill="#fbbf24" />
+            <circle cx="150" cy="95" r="3" fill="#fbbf24" />
+            <circle cx="180" cy="70" r="3" fill="#fbbf24" />
+            <circle cx="210" cy="110" r="3" fill="#fbbf24" />
+            <circle cx="240" cy="85" r="3" fill="#fbbf24" />
+            <circle cx="130" cy="140" r="3" fill="#fbbf24" />
+            <circle cx="170" cy="155" r="3" fill="#fbbf24" />
+            <circle cx="200" cy="135" r="3" fill="#fbbf24" />
+            <circle cx="110" cy="200" r="3" fill="#fbbf24" />
+            <circle cx="150" cy="220" r="3" fill="#fbbf24" />
+            <circle cx="190" cy="210" r="3" fill="#fbbf24" />
+            <circle cx="140" cy="280" r="3" fill="#fbbf24" />
+            <circle cx="170" cy="300" r="3" fill="#fbbf24" />
+            <circle cx="120" cy="350" r="3" fill="#fbbf24" />
+            <circle cx="160" cy="380" r="3" fill="#fbbf24" />
+            <circle cx="100" cy="420" r="3" fill="#fbbf24" />
+            <circle cx="150" cy="450" r="3" fill="#fbbf24" />
+            <circle cx="180" cy="480" r="3" fill="#fbbf24" />
+            <circle cx="130" cy="520" r="3" fill="#fbbf24" />
+            <circle cx="170" cy="550" r="3" fill="#fbbf24" />
+            
+            {/* White Curved Paths */}
+            <path d="M 300 0 Q 310 100 320 200 Q 325 300 330 400 Q 328 500 320 600 L 320 700" stroke="#ffffff" strokeWidth="25" fill="none" />
+            <path d="M 350 0 Q 360 100 370 200 Q 375 300 380 400 Q 378 500 370 600 L 370 700" stroke="#ffffff" strokeWidth="20" fill="none" />
+            
+            {/* Mausoleum - Blue Squares in Organized Rows */}
+            {/* Row 1 */}
+            <rect x="380" y="120" width="25" height="25" fill="#2563eb" />
+            <rect x="415" y="120" width="25" height="25" fill="#2563eb" />
+            <rect x="450" y="120" width="25" height="25" fill="#2563eb" />
+            <rect x="485" y="120" width="25" height="25" fill="#2563eb" />
+            
+            {/* Row 2 */}
+            <rect x="380" y="160" width="25" height="25" fill="#2563eb" />
+            <rect x="415" y="160" width="25" height="25" fill="#2563eb" />
+            <rect x="450" y="160" width="25" height="25" fill="#2563eb" />
+            <rect x="485" y="160" width="25" height="25" fill="#2563eb" />
+            
+            {/* Row 3 */}
+            <rect x="380" y="200" width="25" height="25" fill="#2563eb" />
+            <rect x="415" y="200" width="25" height="25" fill="#2563eb" />
+            <rect x="450" y="200" width="25" height="25" fill="#2563eb" />
+            <rect x="485" y="200" width="25" height="25" fill="#2563eb" />
+            
+            {/* Row 4 */}
+            <rect x="380" y="240" width="25" height="25" fill="#2563eb" />
+            <rect x="415" y="240" width="25" height="25" fill="#2563eb" />
+            <rect x="450" y="240" width="25" height="25" fill="#2563eb" />
+            <rect x="485" y="240" width="25" height="25" fill="#2563eb" />
+            
+            {/* Row 5 */}
+            <rect x="380" y="280" width="25" height="25" fill="#2563eb" />
+            <rect x="415" y="280" width="25" height="25" fill="#2563eb" />
+            <rect x="450" y="280" width="25" height="25" fill="#2563eb" />
+            <rect x="485" y="280" width="25" height="25" fill="#2563eb" />
+            
+            {/* Row 6 */}
+            <rect x="380" y="320" width="25" height="25" fill="#2563eb" />
+            <rect x="415" y="320" width="25" height="25" fill="#2563eb" />
+            <rect x="450" y="320" width="25" height="25" fill="#2563eb" />
+            <rect x="485" y="320" width="25" height="25" fill="#2563eb" />
+            
+            {/* Apartment/Columbarium - Red Vertical Bars */}
+            <rect x="50" y="150" width="20" height="250" fill="#ef4444" rx="3" />
+            <rect x="540" y="150" width="20" height="250" fill="#ef4444" rx="3" />
+          </svg>
           
-          {/* Navigation Route Overlay with markers inside SVG */}
+          {/* Navigation Route Overlay */}
           {navigationTarget && (
             <svg
               className="absolute inset-0 w-full h-full pointer-events-none"
-              viewBox="0 0 400 400"
+              viewBox="0 0 600 700"
               preserveAspectRatio="xMidYMid slice"
             >
               {/* Navigation Route Line */}
               <path
-                d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                d="M 100 350 Q 250 300 400 280 L 450 200"
                 fill="none"
                 stroke="#60a5fa"
                 strokeWidth="8"
@@ -141,25 +207,43 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
                 opacity="0.9"
               />
 
-              {/* User Location Marker - positioned so arrow tip is at line start (80, 320) */}
-              <g transform="translate(67, 333)">
+              {/* User Location Marker */}
+              <g transform="translate(87, 363)">
                 <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
                 <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(45) translate(0, -8)" />
               </g>
 
-              {/* Destination Marker - at end of path (260, 160) */}
-              <g transform="translate(260, 160)">
-                {/* Pin shadow */}
+              {/* Destination Marker */}
+              <g transform="translate(450, 200)">
                 <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
-                {/* Pin point */}
                 <polygon points="0,16 -8,0 8,0" fill="#a3e635" />
-                {/* Pin circle */}
                 <circle cx="0" cy="-8" r="14" fill="#a3e635" stroke="white" strokeWidth="2" />
-                {/* Pin center dot */}
                 <circle cx="0" cy="-8" r="5" fill="white" />
               </g>
             </svg>
           )}
+        </div>
+
+        {/* Legend - Bottom Left */}
+        <div className="absolute bottom-4 left-4 z-20 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-gray-300 dark:border-gray-700 p-3">
+          <p className="text-xs font-semibold text-foreground mb-2">{t("Legend", "Kalakaran")}</p>
+          <div className="space-y-1.5">
+            {/* Garden Type - Yellow */}
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <span className="text-xs text-muted-foreground">{t("Garden", "Garden")}</span>
+            </div>
+            {/* Mausoleum - Blue */}
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-600"></div>
+              <span className="text-xs text-muted-foreground">{t("Mausoleum", "Mausoleum")}</span>
+            </div>
+            {/* Apartment - Red */}
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-red-500"></div>
+              <span className="text-xs text-muted-foreground">{t("Apartment", "Apartment")}</span>
+            </div>
+          </div>
         </div>
 
         {/* Zoom Controls */}
