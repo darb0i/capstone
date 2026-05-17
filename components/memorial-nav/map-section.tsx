@@ -43,15 +43,15 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
     setIsDragging(true)
     dragStart.current = { x: e.clientX, y: e.clientY }
     positionStart.current = { x: position.x, y: position.y }
-    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+      ; (e.target as HTMLElement).setPointerCapture(e.pointerId)
   }, [position])
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging) return
-    
+
     const deltaX = e.clientX - dragStart.current.x
     const deltaY = e.clientY - dragStart.current.y
-    
+
     setPosition({
       x: positionStart.current.x + deltaX,
       y: positionStart.current.y + deltaY
@@ -60,7 +60,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
 
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     setIsDragging(false)
-    ;(e.target as HTMLElement).releasePointerCapture(e.pointerId)
+      ; (e.target as HTMLElement).releasePointerCapture(e.pointerId)
   }, [])
 
   return (
@@ -96,7 +96,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
       </div>
 
       {/* Map View */}
-      <div 
+      <div
         ref={containerRef}
         className="flex-1 relative mx-4 mb-4 rounded-xl overflow-hidden bg-muted min-h-0 touch-none"
         onPointerDown={handlePointerDown}
@@ -105,9 +105,9 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
         onPointerLeave={handlePointerUp}
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
-        <div 
+        <div
           className="absolute inset-0 origin-center select-none"
-          style={{ 
+          style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
             transition: isDragging ? 'none' : 'transform 0.2s ease-out'
           }}
@@ -122,7 +122,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
             className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
-          
+
           {/* Navigation Route Overlay with markers inside SVG */}
           {navigationTarget && (
             <svg
@@ -142,7 +142,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               />
 
               {/* User Location Marker - at line start (bottom-left on road) */}
-              <g transform="translate(5, 255)">
+              <g transform="translate(5, 245)">
                 <circle cx="0" cy="0" r="14" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" strokeWidth="3" />
                 <polygon points="0,-8 5,6 -5,6" fill="#22c55e" transform="rotate(45) translate(0, -6)" />
               </g>
@@ -164,21 +164,21 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
 
         {/* Zoom Controls */}
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
-          <button 
+          <button
             onClick={handleZoomIn}
             className="w-10 h-10 flex items-center justify-center bg-card rounded-full shadow-lg border border-border hover:bg-muted transition-colors"
             aria-label={t("Zoom in", "Palakihin")}
           >
             <ZoomIn className="w-5 h-5 text-foreground" />
           </button>
-          <button 
+          <button
             onClick={handleZoomOut}
             className="w-10 h-10 flex items-center justify-center bg-card rounded-full shadow-lg border border-border hover:bg-muted transition-colors"
             aria-label={t("Zoom out", "Paliitin")}
           >
             <ZoomOut className="w-5 h-5 text-foreground" />
           </button>
-          <button 
+          <button
             onClick={handleReset}
             className="px-3 py-2 flex items-center justify-center bg-card rounded-full shadow-lg border border-border text-xs font-medium text-foreground hover:bg-muted transition-colors"
           >
