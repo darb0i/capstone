@@ -18,8 +18,8 @@ interface MapSectionProps {
 }
 
 export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionProps) {
-  const [zoom, setZoom] = useState(1)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1.4)
+  const [position, setPosition] = useState({ x: 0, y: 30 })
   const [isDragging, setIsDragging] = useState(false)
   const dragStart = useRef({ x: 0, y: 0 })
   const positionStart = useRef({ x: 0, y: 0 })
@@ -35,23 +35,23 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
   }
 
   const handleReset = () => {
-    setZoom(1)
-    setPosition({ x: 0, y: 0 })
+    setZoom(1.4)
+    setPosition({ x: 0, y: 30 })
   }
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     setIsDragging(true)
     dragStart.current = { x: e.clientX, y: e.clientY }
     positionStart.current = { x: position.x, y: position.y }
-    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+      ; (e.target as HTMLElement).setPointerCapture(e.pointerId)
   }, [position])
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging) return
-    
+
     const deltaX = e.clientX - dragStart.current.x
     const deltaY = e.clientY - dragStart.current.y
-    
+
     setPosition({
       x: positionStart.current.x + deltaX,
       y: positionStart.current.y + deltaY
@@ -60,7 +60,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
 
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     setIsDragging(false)
-    ;(e.target as HTMLElement).releasePointerCapture(e.pointerId)
+      ; (e.target as HTMLElement).releasePointerCapture(e.pointerId)
   }, [])
 
   return (
@@ -96,7 +96,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
       </div>
 
       {/* Map View */}
-      <div 
+      <div
         ref={containerRef}
         className="flex-1 relative mx-4 mb-4 rounded-xl overflow-hidden bg-muted min-h-0 touch-none"
         onPointerDown={handlePointerDown}
@@ -105,9 +105,9 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
         onPointerLeave={handlePointerUp}
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
-        <div 
+        <div
           className="absolute inset-0 origin-center select-none"
-          style={{ 
+          style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
             transition: isDragging ? 'none' : 'transform 0.2s ease-out'
           }}
@@ -119,10 +119,10 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               "Anahao Public Cemetery satellite view showing roads, buildings with red roof, and surrounding vegetation",
               "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
             )}
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
-          
+
           {/* Navigation Route Overlay with markers inside SVG */}
           {navigationTarget && (
             <svg
@@ -130,25 +130,25 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               viewBox="0 0 400 400"
               preserveAspectRatio="xMidYMid slice"
             >
-              {/* Navigation Route Line */}
+              {/* Navigation Route Line - follows the white road path */}
               <path
-                d="M 80 320 Q 120 300 180 280 L 250 240 L 260 160"
+                d="M 100 225 Q 130 210 160 190 Q 190 175 210 165 L 230 200"
                 fill="none"
-                stroke="#60a5fa"
-                strokeWidth="8"
+                stroke="#22c55e"
+                strokeWidth="5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 opacity="0.9"
               />
 
-              {/* User Location Marker - positioned so arrow tip is at line start (80, 320) */}
-              <g transform="translate(67, 333)">
-                <circle cx="0" cy="0" r="18" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="3" />
-                <polygon points="0,-10 6,8 -6,8" fill="#3b82f6" transform="rotate(45) translate(0, -8)" />
+              {/* User Location Marker - at line start (on road, visible) */}
+              <g transform="translate(100, 225)">
+                <circle cx="0" cy="0" r="14" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" strokeWidth="3" />
+                <polygon points="0,-8 5,6 -5,6" fill="#22c55e" transform="rotate(45) translate(0, -6)" />
               </g>
 
-              {/* Destination Marker - at end of path (260, 160) */}
-              <g transform="translate(260, 160)">
+              {/* Destination Marker - on a blue mausoleum */}
+              <g transform="translate(230, 200)">
                 {/* Pin shadow */}
                 <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
                 {/* Pin point */}
@@ -164,26 +164,45 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
 
         {/* Zoom Controls */}
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
-          <button 
+          <button
             onClick={handleZoomIn}
             className="w-10 h-10 flex items-center justify-center bg-card rounded-full shadow-lg border border-border hover:bg-muted transition-colors"
             aria-label={t("Zoom in", "Palakihin")}
           >
             <ZoomIn className="w-5 h-5 text-foreground" />
           </button>
-          <button 
+          <button
             onClick={handleZoomOut}
             className="w-10 h-10 flex items-center justify-center bg-card rounded-full shadow-lg border border-border hover:bg-muted transition-colors"
             aria-label={t("Zoom out", "Paliitin")}
           >
             <ZoomOut className="w-5 h-5 text-foreground" />
           </button>
-          <button 
+          <button
             onClick={handleReset}
             className="px-3 py-2 flex items-center justify-center bg-card rounded-full shadow-lg border border-border text-xs font-medium text-foreground hover:bg-muted transition-colors"
           >
             {t("Reset", "Reset")}
           </button>
+        </div>
+
+        {/* Legend */}
+        <div className="absolute bottom-4 left-4 z-10 bg-card/95 backdrop-blur-sm rounded-lg shadow-lg border border-border p-3">
+          <p className="text-xs font-semibold text-foreground mb-2">{t("Legend", "Alamat")}</p>
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-[#3b82f6]" />
+              <span className="text-xs text-foreground">{t("Mausoleum", "Mausoleo")}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-[#facc15]" />
+              <span className="text-xs text-foreground">{t("Garden", "Hardin")}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-[#dc2626]" />
+              <span className="text-xs text-foreground">{t("Apartment", "Apartment")}</span>
+            </div>
+          </div>
         </div>
 
         {/* Navigation Indicator */}
