@@ -18,7 +18,7 @@ interface MapSectionProps {
 }
 
 export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionProps) {
-  const [zoom, setZoom] = useState(1.8)
+  const [zoom, setZoom] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const dragStart = useRef({ x: 0, y: 0 })
@@ -35,7 +35,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
   }
 
   const handleReset = () => {
-    setZoom(1.8)
+    setZoom(1)
     setPosition({ x: 0, y: 0 })
   }
 
@@ -191,11 +191,11 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
           <p className="text-xs font-semibold text-foreground mb-2">{t("Legend", "Alamat")}</p>
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-[#1e3a8a]" />
+              <div className="w-4 h-4 rounded bg-[#3b82f6]" />
               <span className="text-xs text-foreground">{t("Mausoleum", "Mausoleo")}</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-[#86a789]" />
+              <div className="w-4 h-4 rounded bg-[#facc15]" />
               <span className="text-xs text-foreground">{t("Garden", "Hardin")}</span>
             </div>
             <div className="flex items-center gap-2">
