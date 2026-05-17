@@ -132,7 +132,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
             >
               {/* Navigation Route Line - follows the white road path */}
               <path
-                d="M 5 255 Q 50 235 95 210 L 140 185 Q 170 165 200 145 L 230 130 Q 250 120 270 145"
+                d="M 5 270 Q 50 250 95 225 L 140 200 Q 170 180 200 160 L 230 145 Q 250 135 270 160"
                 fill="none"
                 stroke="#22c55e"
                 strokeWidth="5"
@@ -142,13 +142,13 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               />
 
               {/* User Location Marker - at line start (bottom-left on road) */}
-              <g transform="translate(5, 255)">
+              <g transform="translate(5, 270)">
                 <circle cx="0" cy="0" r="14" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" strokeWidth="3" />
                 <polygon points="0,-8 5,6 -5,6" fill="#22c55e" transform="rotate(45) translate(0, -6)" />
               </g>
 
               {/* Destination Marker - on a blue mausoleum */}
-              <g transform="translate(270, 145)">
+              <g transform="translate(270, 160)">
                 {/* Pin shadow */}
                 <ellipse cx="0" cy="18" rx="8" ry="4" fill="rgba(0,0,0,0.2)" />
                 {/* Pin point */}

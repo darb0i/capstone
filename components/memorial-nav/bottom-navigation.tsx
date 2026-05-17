@@ -1,6 +1,6 @@
 "use client"
 
-import { Map, Search, MessageCircleQuestion, Settings } from "lucide-react"
+import { Map, Search, LayoutGrid, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface NavItem {
@@ -12,7 +12,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: "maps", label: "Maps", icon: Map },
   { id: "search", label: "Search", icon: Search },
-  { id: "inquire", label: "Inquire", icon: MessageCircleQuestion },
+  { id: "inquire", label: "Lots", icon: LayoutGrid },
   { id: "settings", label: "Settings", icon: Settings },
 ]
 
