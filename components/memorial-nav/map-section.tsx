@@ -18,7 +18,7 @@ interface MapSectionProps {
 }
 
 export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionProps) {
-  const [zoom, setZoom] = useState(1.8)
+  const [zoom, setZoom] = useState(1.7)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const dragStart = useRef({ x: 0, y: 0 })
