@@ -119,7 +119,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
               "Anahao Public Cemetery satellite view showing roads, buildings with red roof, and surrounding vegetation",
               "Satellite view ng Anahao Public Cemetery na nagpapakita ng mga kalsada, gusali na may pulang bubong, at mga halaman sa paligid"
             )}
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
           
@@ -187,7 +187,7 @@ export function MapSection({ navigationTarget, onCancelNavigation }: MapSectionP
         </div>
 
         {/* Legend */}
-        <div className="absolute top-4 left-4 z-10 bg-card/95 backdrop-blur-sm rounded-lg shadow-lg border border-border p-3">
+        <div className="absolute bottom-4 left-4 z-10 bg-card/95 backdrop-blur-sm rounded-lg shadow-lg border border-border p-3">
           <p className="text-xs font-semibold text-foreground mb-2">{t("Legend", "Alamat")}</p>
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2">
